@@ -1,0 +1,15 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<TcPlcObject Version="1.1.0.1" ProductVersion="3.1.4022.11">
+  <POU Name="Cell_Devices" Id="{cf4f6cd5-6aec-4f4b-86a8-b649e98ae2f5}" SpecialFunc="None">
+    <Declaration><![CDATA[PROGRAM Cell_Devices
+VAR
+END_VAR
+]]></Declaration>
+    <Implementation>
+      <ST><![CDATA[]]></ST>
+    </Implementation>
+    <LineIds Name="Cell_Devices">
+      <LineId Id="5" Count="0" />
+    </LineIds>
+  </POU>
+</TcPlcObject>

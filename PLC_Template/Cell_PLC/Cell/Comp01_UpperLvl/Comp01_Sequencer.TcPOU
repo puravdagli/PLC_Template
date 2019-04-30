@@ -1,0 +1,333 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<TcPlcObject Version="1.1.0.1" ProductVersion="3.1.4022.11">
+  <POU Name="Comp01_Sequencer" Id="{142513b7-b9cd-4b59-89ee-d177b0b4149f}" SpecialFunc="None">
+    <Declaration><![CDATA[PROGRAM Comp01_Sequencer
+VAR
+	ActiveStep 	: INT;
+	Step1000	: Step;
+	Step1010	: Step;
+	Step1020	: Step;
+	Step1030	: Step;
+	Step1040	: Step;
+	Step1050	: Step;
+	Step1060	: Step;
+	Step1070	: Step;
+	Step1080	: Step;
+	Step1090	: Step;
+END_VAR
+]]></Declaration>
+    <Implementation>
+      <ST><![CDATA[CASE Comp01.StateManager.oState OF
+	State.Aborting:		Comp01_SeqAborting();
+	State.Aborted:		Comp01_SeqAborted();
+	State.Resetting:	Comp01_SeqResetting();
+	State.Stopped:		Comp01_SeqStopped();
+	State.Starting:		Comp01_SeqStarting();
+	State.Running:		Comp01_SeqRunning();
+	State.Pausing:		Comp01_SeqPausing();
+	State.Paused:		Comp01_SeqPaused();
+	State.Resuming:		Comp01_SeqResuming();
+	State.Stopping:		
+						Comp01_SeqRunning();
+						Comp01_SeqStopping();	
+END_CASE]]></ST>
+    </Implementation>
+    <Action Name="Comp01_SeqAborted" Id="{ec64731a-ec42-430e-9cbf-6ad6f6e57ebf}">
+      <Implementation>
+        <ST><![CDATA[]]></ST>
+      </Implementation>
+    </Action>
+    <Action Name="Comp01_SeqAborting" Id="{db132917-ac08-4851-ae6a-8d61af51d6f9}">
+      <Implementation>
+        <ST><![CDATA[Comp01.PartLoader_Pusher.iCmd := CmdServo.Stop;
+Comp01.D07_SRV2.iCmd := CmdServo.Stop;
+IF Comp01.PartLoader_Pusher.oState = StateServo.Stopped AND Comp01.D07_SRV2.oState = StateServo.Stopped THEN
+Comp01.StateManager.iSeqComplete := 1;
+END_IF]]></ST>
+      </Implementation>
+    </Action>
+    <Action Name="Comp01_SeqPaused" Id="{884319e9-8f3f-4417-a679-6847569991bd}">
+      <Implementation>
+        <ST><![CDATA[]]></ST>
+      </Implementation>
+    </Action>
+    <Action Name="Comp01_SeqPausing" Id="{4bf9d84b-9cef-4033-85f5-aac8801d9203}">
+      <Implementation>
+        <ST><![CDATA[Comp01.PartLoader_Pusher.iCmd := CmdServo.Stop;
+Comp01.D07_SRV2.iCmd := CmdServo.Stop;
+IF Comp01.PartLoader_Pusher.oState = StateServo.Stopped AND Comp01.D07_SRV2.oState = StateServo.Stopped THEN
+Comp01.StateManager.iSeqComplete := 1;
+END_IF]]></ST>
+      </Implementation>
+    </Action>
+    <Action Name="Comp01_SeqResetting" Id="{a6329c59-58e8-47ae-ad4c-32e571828fdf}">
+      <Implementation>
+        <ST><![CDATA[Comp01.StateManager.iSeqComplete := 1;]]></ST>
+      </Implementation>
+    </Action>
+    <Action Name="Comp01_SeqResuming" Id="{479006ad-464e-4c20-9a4b-3f4c8f613069}">
+      <Implementation>
+        <ST><![CDATA[Comp01.StateManager.iSeqComplete := 1;]]></ST>
+      </Implementation>
+    </Action>
+    <Action Name="Comp01_SeqRunning" Id="{e3b0230e-fef1-4a64-9133-e02d59d2fbe0}">
+      <Implementation>
+        <ST><![CDATA[Step1000(	cDescription		:= 'Enable D06 Servo 1',
+			cThisStep			:= 1000,
+			cNextStep			:= 1010,
+			cRecoveryStep		:= 1001,
+			cTimeoutPreset 		:= T#5S,
+			ioActiveStep 		:= ActiveStep);
+
+IF Step1000.sActive THEN
+			//Actions
+			Comp01.PartLoader_Pusher.iCmd	:= CmdServo.Enable;
+			
+			//Completion Conditions
+			IF Comp01.PartLoader_Pusher.oState = StateServo.Enabled OR Comp01.PartLoader_Pusher.oState = StateServo.Stopped THEN
+			Step1000.iComplete	:= TRUE;
+			END_IF
+END_IF			
+
+//=============================================================================//
+			
+Step1010(	cDescription	:= 'Start D06 Servo 1 Move 1',
+			cThisStep		:= 1010,
+			cNextStep		:= 1020,
+			cRecoveryStep	:= 1011,
+			cTimeoutPreset 	:= T#5S,
+			ioActiveStep 	:= ActiveStep);
+
+IF Step1010.sActive THEN
+			//Actions
+			Comp01.PartLoader_Pusher.iMoveIndex := 1;
+			Comp01.PartLoader_Pusher.iCmd	:= CmdServo.StartMove;
+			
+			//Completion Conditions
+			IF Comp01.PartLoader_Pusher.oState = StateServo.MoveInProgress THEN
+			Step1010.iComplete	:= TRUE;
+			END_IF
+END_IF		
+
+//=============================================================================//
+
+Step1020(	cDescription	:= 'Wait for D06 Servo 1 Move 1 Complete',
+			cThisStep		:= 1020,
+			cNextStep		:= 1030,
+			cRecoveryStep	:= 1021,
+			cTimeoutPreset 	:= T#5S,
+			ioActiveStep 	:= ActiveStep);
+
+IF Step1020.sActive THEN
+			//Actions
+			
+			//Completion Conditions
+			IF Comp01.PartLoader_Pusher.oState = StateServo.MoveComplete AND Comp01.PartLoader_Pusher.sMoveIndex = Comp01.PartLoader_Pusher.iMoveIndex THEN
+			Step1020.iComplete	:= TRUE;
+			END_IF
+END_IF		
+
+//=============================================================================//
+			
+Step1030(	cDescription	:= 'Extend D01 Actuator 1',
+			cThisStep		:= 1030,
+			cNextStep		:= 1040,
+			cRecoveryStep	:= 1031,
+			cTimeoutPreset 	:= T#5S,
+			ioActiveStep 	:= ActiveStep);
+
+IF Step1030.sActive THEN
+			//Actions
+			//Comp01.D01_ACT1.iCmd	:= CmdActuator.Extend;
+			
+			//Completion Conditions
+			IF Comp01.D02_ACT1.oState = StateActuator.Extended THEN
+			Step1030.iComplete	:= TRUE;
+			END_IF
+END_IF		
+
+//=============================================================================//
+
+Step1040(	cDescription	:= 'Start D06 Servo 1 Move 2',
+			cThisStep		:= 1040,
+			cNextStep		:= 1050,
+			cRecoveryStep	:= 1041,
+			cTimeoutPreset 	:= T#5S,
+			ioActiveStep 	:= ActiveStep);
+
+IF Step1040.sActive THEN
+			//Actions
+			Comp01.PartLoader_Pusher.iMoveIndex := 2;
+			Comp01.PartLoader_Pusher.iCmd	:= CmdServo.StartMove;
+			
+			//Completion Conditions
+			IF Comp01.PartLoader_Pusher.oState = StateServo.MoveComplete AND Comp01.PartLoader_Pusher.sMoveIndex = Comp01.PartLoader_Pusher.iMoveIndex THEN
+			Step1040.iComplete	:= TRUE;
+			END_IF
+END_IF		
+
+//=============================================================================//
+
+
+Step1050(	cDescription	:= 'Wait for D06 Servo 1 Move 2 Complete',
+			cThisStep		:= 1050,
+			cNextStep		:= 1060,
+			cRecoveryStep	:= 1051,
+			cTimeoutPreset 	:= T#5S,
+			ioActiveStep 	:= ActiveStep);
+
+IF Step1050.sActive THEN
+			//Actions
+			
+			//Completion Conditions
+			IF Comp01.PartLoader_Pusher.oState = StateServo.MoveComplete AND Comp01.PartLoader_Pusher.sMoveIndex = Comp01.PartLoader_Pusher.iMoveIndex THEN
+			Step1050.iComplete	:= TRUE;
+			END_IF
+END_IF		
+
+//=============================================================================//
+			
+Step1060(	cDescription	:= 'Retract D01 Actuator 1',
+			cThisStep		:= 1060,
+			cNextStep		:= 1070,
+			cRecoveryStep	:= 1061,
+			cTimeoutPreset 	:= T#5S,
+			ioActiveStep 	:= ActiveStep);
+
+IF Step1060.sActive THEN
+			//Actions
+			Comp01.D02_ACT1.iCmd	:= CmdActuator.Retract;
+			
+			//Completion Conditions
+			IF Comp01.D02_ACT1.oState = StateActuator.Retracted THEN
+			Step1060.iComplete	:= TRUE;
+			END_IF
+END_IF		
+
+//=============================================================================//
+
+Step1070(	cDescription	:= 'Disable D06 Servo 1',
+			cThisStep		:= 1070,
+			cNextStep		:= 1080,
+			cRecoveryStep	:= 1071,
+			cTimeoutPreset 	:= T#5S,
+			ioActiveStep 	:= ActiveStep);
+
+IF Step1070.sActive THEN
+			//Actions
+			Comp01.PartLoader_Pusher.iCmd := CmdServo.Disable;
+			
+			//Completion Conditions
+			IF Comp01.PartLoader_Pusher.oState = StateServo.Disabled THEN
+			Step1070.iComplete	:= TRUE;
+			Comp01.StateManager.iSeqComplete := TRUE;
+			END_IF
+END_IF		
+
+//=============================================================================//]]></ST>
+      </Implementation>
+    </Action>
+    <Action Name="Comp01_SeqStarting" Id="{a7d61877-4d6a-403f-b0bd-d887eff2b818}">
+      <Implementation>
+        <ST><![CDATA[Comp01.StateManager.iSeqComplete := 1;]]></ST>
+      </Implementation>
+    </Action>
+    <Action Name="Comp01_SeqStopped" Id="{bbdd2eaa-97c6-4096-a0ef-b13e3b1b2eb2}">
+      <Implementation>
+        <ST><![CDATA[]]></ST>
+      </Implementation>
+    </Action>
+    <Action Name="Comp01_SeqStopping" Id="{af0d3467-cf50-427c-9e43-cb863d4c9f07}">
+      <Implementation>
+        <ST><![CDATA[]]></ST>
+      </Implementation>
+    </Action>
+    <LineIds Name="Comp01_Sequencer">
+      <LineId Id="13" Count="10" />
+      <LineId Id="30" Count="1" />
+      <LineId Id="8" Count="0" />
+    </LineIds>
+    <LineIds Name="Comp01_Sequencer.Comp01_SeqAborted">
+      <LineId Id="1" Count="0" />
+    </LineIds>
+    <LineIds Name="Comp01_Sequencer.Comp01_SeqAborting">
+      <LineId Id="2" Count="2" />
+      <LineId Id="1" Count="0" />
+      <LineId Id="5" Count="0" />
+    </LineIds>
+    <LineIds Name="Comp01_Sequencer.Comp01_SeqPaused">
+      <LineId Id="1" Count="0" />
+    </LineIds>
+    <LineIds Name="Comp01_Sequencer.Comp01_SeqPausing">
+      <LineId Id="2" Count="3" />
+      <LineId Id="1" Count="0" />
+    </LineIds>
+    <LineIds Name="Comp01_Sequencer.Comp01_SeqResetting">
+      <LineId Id="1" Count="0" />
+    </LineIds>
+    <LineIds Name="Comp01_Sequencer.Comp01_SeqResuming">
+      <LineId Id="1" Count="0" />
+    </LineIds>
+    <LineIds Name="Comp01_Sequencer.Comp01_SeqRunning">
+      <LineId Id="1" Count="0" />
+      <LineId Id="25" Count="0" />
+      <LineId Id="3" Count="2" />
+      <LineId Id="27" Count="0" />
+      <LineId Id="32" Count="0" />
+      <LineId Id="12" Count="0" />
+      <LineId Id="66" Count="0" />
+      <LineId Id="42" Count="0" />
+      <LineId Id="68" Count="0" />
+      <LineId Id="67" Count="0" />
+      <LineId Id="43" Count="0" />
+      <LineId Id="34" Count="0" />
+      <LineId Id="44" Count="0" />
+      <LineId Id="35" Count="1" />
+      <LineId Id="33" Count="0" />
+      <LineId Id="37" Count="0" />
+      <LineId Id="28" Count="0" />
+      <LineId Id="30" Count="0" />
+      <LineId Id="15" Count="1" />
+      <LineId Id="6" Count="0" />
+      <LineId Id="29" Count="0" />
+      <LineId Id="31" Count="0" />
+      <LineId Id="38" Count="0" />
+      <LineId Id="69" Count="0" />
+      <LineId Id="45" Count="0" />
+      <LineId Id="39" Count="0" />
+      <LineId Id="70" Count="1" />
+      <LineId Id="47" Count="1" />
+      <LineId Id="46" Count="0" />
+      <LineId Id="11" Count="0" />
+      <LineId Id="40" Count="0" />
+      <LineId Id="10" Count="0" />
+      <LineId Id="50" Count="9" />
+      <LineId Id="72" Count="1" />
+      <LineId Id="61" Count="4" />
+      <LineId Id="49" Count="0" />
+      <LineId Id="75" Count="10" />
+      <LineId Id="87" Count="18" />
+      <LineId Id="112" Count="1" />
+      <LineId Id="106" Count="5" />
+      <LineId Id="74" Count="0" />
+      <LineId Id="115" Count="16" />
+      <LineId Id="151" Count="0" />
+      <LineId Id="132" Count="18" />
+      <LineId Id="114" Count="0" />
+      <LineId Id="170" Count="0" />
+      <LineId Id="153" Count="13" />
+      <LineId Id="171" Count="0" />
+      <LineId Id="167" Count="2" />
+      <LineId Id="152" Count="0" />
+    </LineIds>
+    <LineIds Name="Comp01_Sequencer.Comp01_SeqStarting">
+      <LineId Id="1" Count="0" />
+    </LineIds>
+    <LineIds Name="Comp01_Sequencer.Comp01_SeqStopped">
+      <LineId Id="1" Count="0" />
+    </LineIds>
+    <LineIds Name="Comp01_Sequencer.Comp01_SeqStopping">
+      <LineId Id="1" Count="0" />
+    </LineIds>
+  </POU>
+</TcPlcObject>

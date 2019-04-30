@@ -1,0 +1,156 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<TcPlcObject Version="1.1.0.1" ProductVersion="3.1.4022.11">
+  <POU Name="Comp02_Sequencer" Id="{54aa1706-180c-420d-9185-7238ffa35960}" SpecialFunc="None">
+    <Declaration><![CDATA[PROGRAM Comp02_Sequencer
+VAR
+	ActiveStep 	: INT;
+	Step1000	: Step;
+	Step1100	: Step;
+END_VAR
+]]></Declaration>
+    <Implementation>
+      <ST><![CDATA[CASE Comp02.StateManager.oState OF
+	State.Aborting:		Comp02_SeqAborting();
+	State.Aborted:		Comp02_SeqAborted();
+	State.Resetting:	Comp02_SeqResetting();
+	State.Stopped:		Comp02_SeqStopped();
+	State.Starting:		Comp02_SeqStarting();
+	State.Running:		Comp02_SeqRunning();
+	State.Pausing:		Comp02_SeqPausing();
+	State.Paused:		Comp02_SeqPaused();
+	State.Resuming:		Comp02_SeqResuming();
+	State.Stopping:		Comp02_SeqStopping();	
+END_CASE]]></ST>
+    </Implementation>
+    <Action Name="Comp02_SeqAborted" Id="{ecda4b35-a6f9-4aa4-9a0b-55ecbae06c4e}">
+      <Implementation>
+        <ST><![CDATA[]]></ST>
+      </Implementation>
+    </Action>
+    <Action Name="Comp02_SeqAborting" Id="{12488e60-9902-4664-8e4c-60bafe664814}">
+      <Implementation>
+        <ST><![CDATA[]]></ST>
+      </Implementation>
+    </Action>
+    <Action Name="Comp02_SeqPaused" Id="{34b4e2ba-2645-4e5b-8dce-a337f41cf9c3}">
+      <Implementation>
+        <ST><![CDATA[]]></ST>
+      </Implementation>
+    </Action>
+    <Action Name="Comp02_SeqPausing" Id="{ea509241-fa55-4fc3-b8e3-92f4ce0ba158}">
+      <Implementation>
+        <ST><![CDATA[]]></ST>
+      </Implementation>
+    </Action>
+    <Action Name="Comp02_SeqResetting" Id="{5c304fbd-47d2-454c-b058-6eba2db2b53a}">
+      <Implementation>
+        <ST><![CDATA[]]></ST>
+      </Implementation>
+    </Action>
+    <Action Name="Comp02_SeqResuming" Id="{b970d7f8-8fa0-41d9-be91-2cbb1af3d079}">
+      <Implementation>
+        <ST><![CDATA[]]></ST>
+      </Implementation>
+    </Action>
+    <Action Name="Comp02_SeqRunning" Id="{082ff177-30d7-495f-b4a2-182490cbe579}">
+      <Implementation>
+        <ST><![CDATA[Step1000(	cDescription		:= 'Raise Blade Stop',
+			cThisStep			:= 1000,
+			cNextStep			:= 1100,
+			cRecoveryStep		:= 1050,
+			cTimeoutPreset 		:= T#5S,
+			ioActiveStep 		:= ActiveStep);
+
+IF Step1000.sActive THEN
+			Comp01.D01_ACT1.iCmd	:= CmdActuator.Extend;
+			Step1000.iComplete	:= TRUE;
+END_IF			
+
+//=============================================================================//
+			
+Step1100(	cDescription	:= 'Enable D06 Servo 1',
+			cThisStep		:= 1100,
+			cNextStep		:= 1200,
+			cRecoveryStep	:= 1150,
+			cTimeoutPreset 	:= T#5S,
+			ioActiveStep 	:= ActiveStep);
+
+IF Step1100.sActive THEN
+			Comp01.D06_SRV1.iCmd	:= CmdServo.Enable;
+			Step1100.iComplete	:= TRUE;
+END_IF		
+
+//=============================================================================//]]></ST>
+      </Implementation>
+    </Action>
+    <Action Name="Comp02_SeqStarting" Id="{e3f6040b-a1c5-4df7-99cd-ed5f58e20177}">
+      <Implementation>
+        <ST><![CDATA[]]></ST>
+      </Implementation>
+    </Action>
+    <Action Name="Comp02_SeqStopped" Id="{8993345e-06a2-4b6a-bf5a-01e0cfdeceba}">
+      <Implementation>
+        <ST><![CDATA[]]></ST>
+      </Implementation>
+    </Action>
+    <Action Name="Comp02_SeqStopping" Id="{d95151f3-038e-4a73-97ee-e2b4fc12893f}">
+      <Implementation>
+        <ST><![CDATA[]]></ST>
+      </Implementation>
+    </Action>
+    <LineIds Name="Comp02_Sequencer">
+      <LineId Id="13" Count="10" />
+      <LineId Id="8" Count="0" />
+    </LineIds>
+    <LineIds Name="Comp02_Sequencer.Comp02_SeqAborted">
+      <LineId Id="1" Count="0" />
+    </LineIds>
+    <LineIds Name="Comp02_Sequencer.Comp02_SeqAborting">
+      <LineId Id="1" Count="0" />
+    </LineIds>
+    <LineIds Name="Comp02_Sequencer.Comp02_SeqPaused">
+      <LineId Id="1" Count="0" />
+    </LineIds>
+    <LineIds Name="Comp02_Sequencer.Comp02_SeqPausing">
+      <LineId Id="1" Count="0" />
+    </LineIds>
+    <LineIds Name="Comp02_Sequencer.Comp02_SeqResetting">
+      <LineId Id="1" Count="0" />
+    </LineIds>
+    <LineIds Name="Comp02_Sequencer.Comp02_SeqResuming">
+      <LineId Id="1" Count="0" />
+    </LineIds>
+    <LineIds Name="Comp02_Sequencer.Comp02_SeqRunning">
+      <LineId Id="1" Count="0" />
+      <LineId Id="25" Count="0" />
+      <LineId Id="3" Count="2" />
+      <LineId Id="27" Count="0" />
+      <LineId Id="32" Count="0" />
+      <LineId Id="12" Count="0" />
+      <LineId Id="42" Count="0" />
+      <LineId Id="34" Count="2" />
+      <LineId Id="33" Count="0" />
+      <LineId Id="37" Count="0" />
+      <LineId Id="28" Count="0" />
+      <LineId Id="30" Count="0" />
+      <LineId Id="15" Count="1" />
+      <LineId Id="6" Count="0" />
+      <LineId Id="29" Count="0" />
+      <LineId Id="31" Count="0" />
+      <LineId Id="38" Count="1" />
+      <LineId Id="41" Count="0" />
+      <LineId Id="11" Count="0" />
+      <LineId Id="40" Count="0" />
+      <LineId Id="10" Count="0" />
+    </LineIds>
+    <LineIds Name="Comp02_Sequencer.Comp02_SeqStarting">
+      <LineId Id="1" Count="0" />
+    </LineIds>
+    <LineIds Name="Comp02_Sequencer.Comp02_SeqStopped">
+      <LineId Id="1" Count="0" />
+    </LineIds>
+    <LineIds Name="Comp02_Sequencer.Comp02_SeqStopping">
+      <LineId Id="1" Count="0" />
+    </LineIds>
+  </POU>
+</TcPlcObject>

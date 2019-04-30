@@ -1,0 +1,28 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<TcPlcObject Version="1.1.0.1" ProductVersion="3.1.4022.11">
+  <Task Name="PlcTask" Id="{e4b13500-a7de-4bfe-822e-34ddbd6e5ac4}">
+    <!--CycleTime in micro seconds.-->
+    <CycleTime>10000</CycleTime>
+    <Priority>20</Priority>
+    <PouCall>
+      <Name>Cell_Main</Name>
+    </PouCall>
+    <PouCall>
+      <Name>Intfc_Upstream_ML</Name>
+    </PouCall>
+    <PouCall>
+      <Name>Intfc_Downstream_ML</Name>
+    </PouCall>
+    <PouCall>
+      <Name>Intfc_Left_PK</Name>
+    </PouCall>
+    <PouCall>
+      <Name>Intfc_Right_PK</Name>
+    </PouCall>
+    <TaskFBGuid>{5e34af4a-0e71-436f-9bc3-020861938f21}</TaskFBGuid>
+    <Fb_init>{95f16996-332b-4fe8-80d5-50d2e6698ed9}</Fb_init>
+    <Fb_exit>{e34c22a0-60a8-49c7-b77a-317d486a0f0c}</Fb_exit>
+    <CycleUpdate>{a5cb6789-0a50-4fae-abc3-82432fef768b}</CycleUpdate>
+    <PostCycleUpdate>{91727fae-b776-4a2e-9aea-b746d17a167e}</PostCycleUpdate>
+  </Task>
+</TcPlcObject>

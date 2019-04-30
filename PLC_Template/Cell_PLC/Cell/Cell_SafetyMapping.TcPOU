@@ -1,0 +1,16 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<TcPlcObject Version="1.1.0.1" ProductVersion="3.1.4022.11">
+  <POU Name="Cell_SafetyMapping" Id="{80ae55d1-70f2-4389-b7f8-ac53585c12b2}" SpecialFunc="None">
+    <Declaration><![CDATA[PROGRAM Cell_SafetyMapping
+VAR
+
+END_VAR
+]]></Declaration>
+    <Implementation>
+      <ST><![CDATA[]]></ST>
+    </Implementation>
+    <LineIds Name="Cell_SafetyMapping">
+      <LineId Id="5" Count="0" />
+    </LineIds>
+  </POU>
+</TcPlcObject>

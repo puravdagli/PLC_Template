@@ -1,0 +1,21 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<TcPlcObject Version="1.1.0.1" ProductVersion="3.1.4022.11">
+  <GVL Name="Intfc" Id="{99bf1e5f-57e2-4a0f-a251-db19dd5d9a41}">
+    <Declaration><![CDATA[{attribute 'qualified_only'}
+VAR_GLOBAL PERSISTENT
+	Upstream_LaneA_Receiver	 		: Intfc_Receiver;
+	Upstream_LaneB_Sender			: Intfc_Sender;
+	Upstream_ExitLane_Sender		: Intfc_Sender;
+
+	Downstream_LaneA_Sender			: Intfc_Sender;
+	Downstream_LaneB_Receiver		: Intfc_Receiver;
+	Downstream_ExitLane_Receiver	: Intfc_Receiver;
+	
+	LeftPick_Ingress_Sender			: Intfc_Sender;
+	LeftPick_Egress_Receiver		: Intfc_Receiver;
+	
+	RightPick_Ingress_Sender		: Intfc_Sender;
+	RightPick_Egress_Receiver		: Intfc_Receiver;
+END_VAR]]></Declaration>
+  </GVL>
+</TcPlcObject>

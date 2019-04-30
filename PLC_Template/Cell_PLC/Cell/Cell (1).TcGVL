@@ -1,0 +1,15 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<TcPlcObject Version="1.1.0.1" ProductVersion="3.1.4022.11">
+  <GVL Name="Cell" Id="{2a2bb7cf-df64-47af-9771-33b156960614}">
+    <Declaration><![CDATA[{attribute 'qualified_only'}
+VAR_GLOBAL
+	StateManager : StateManager;
+	iJogButton AT %I* : BOOL;	
+	oJogButtonLight AT %Q* : BOOL;
+	
+	ioADSRead : FB_ReadADSSymByName;	
+	ioADSWrite	: FB_WriteADSSymByName;
+END_VAR
+]]></Declaration>
+  </GVL>
+</TcPlcObject>

@@ -1,0 +1,23 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<TcPlcObject Version="1.1.0.1" ProductVersion="3.1.4022.11">
+  <POU Name="Comp01_Main" Id="{baec4577-6414-4931-9ca3-5879091ea58e}" SpecialFunc="None">
+    <Declaration><![CDATA[PROGRAM Comp01_Main
+]]></Declaration>
+    <Implementation>
+      <ST><![CDATA[Comp01.StateManager ();
+Comp01_Sequencer();
+Comp01_Devices();
+
+IF Intfc.Upstream_LaneA_Receiver.iHandshake.WaitingToSend THEN
+	
+END_IF]]></ST>
+    </Implementation>
+    <LineIds Name="Comp01_Main">
+      <LineId Id="75" Count="1" />
+      <LineId Id="42" Count="0" />
+      <LineId Id="79" Count="0" />
+      <LineId Id="78" Count="0" />
+      <LineId Id="80" Count="1" />
+    </LineIds>
+  </POU>
+</TcPlcObject>

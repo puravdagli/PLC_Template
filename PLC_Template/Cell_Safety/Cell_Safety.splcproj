@@ -1,0 +1,49 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Project Crc="1779536346" DefaultTargets="Build" xmlns="http://schemas.microsoft.com/developer/msbuild/2003" ToolsVersion="4.0">
+  <PropertyGroup>
+    <Configuration Condition=" '$(Configuration)' == '' ">Debug</Configuration>
+    <SchemaVersion>2.0</SchemaVersion>
+    <ProjectGuid>{5c77f16e-3477-47fd-9ec6-ca4bf82483ec}</ProjectGuid>
+    <OutputType>Exe</OutputType>
+    <RootNamespace>TwinCAT3SafePlcProject</RootNamespace>
+    <AssemblyName>TwinCAT3SafePlcProject</AssemblyName>
+    <FileUpgradeFlags />
+    <UpgradeBackupLocation />
+    <OldToolsVersion>2.0</OldToolsVersion>
+    <TargetSystem>EL6900</TargetSystem>
+    <ProgrammingLanguage>Graphical Editor</ProgrammingLanguage>
+    <Worker>Purav Dagli</Worker>
+    <IntProjName>PA_ML01_Safety</IntProjName>
+    <IsNewCreated>false</IsNewCreated>
+    <SPlcProjVersion>1.2.0.0</SPlcProjVersion>
+    <NextSdsId>15</NextSdsId>
+    <Name>Cell_Safety</Name>
+  </PropertyGroup>
+  <PropertyGroup Condition=" '$(Configuration)' == 'Release' ">
+    <DebugSymbols>false</DebugSymbols>
+    <OutputPath>bin\Release\</OutputPath>
+    <EnableUnmanagedDebugging>false</EnableUnmanagedDebugging>
+    <CodeAnalysisRuleSet>AllRules.ruleset</CodeAnalysisRuleSet>
+  </PropertyGroup>
+  <ItemGroup>
+    <None Include="Cell\Alias Devices\iZone1_ReqToLock.sds" />
+    <None Include="Cell\Alias Devices\iZone1_Reset.sds" />
+    <None Include="Cell\Alias Devices\Box 9 (EP1908) - Module 1 (FSOE).sds" />
+    <None Include="Cell\Alias Devices\Run.sds" />
+    <None Include="Cell\Alias Devices\iZone1_ReqToUnlock.sds" />
+    <None Include="Cell\Alias Devices\Term 1 (EK1914) - Module 1 (FSOE).sds" />
+    <None Include="Cell\Cell.sal" />
+    <None Include="Cell\Cell.sal.diagram">
+      <DependentUpon>Cell\Cell.sal</DependentUpon>
+      <Visible>false</Visible>
+    </None>
+    <None Include="TargetSystemConfig.xml">
+      <Visible>false</Visible>
+    </None>
+  </ItemGroup>
+  <ItemGroup>
+    <Folder Include="Cell" />
+    <Folder Include="Cell\Alias Devices" />
+    <None Include="Cell\Alias Devices\ErrorAcknowledgement.sds" />
+  </ItemGroup>
+</Project>

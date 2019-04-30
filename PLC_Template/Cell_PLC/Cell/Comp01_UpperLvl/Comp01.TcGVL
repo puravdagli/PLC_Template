@@ -1,0 +1,23 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<TcPlcObject Version="1.1.0.1" ProductVersion="3.1.4022.11">
+  <GVL Name="Comp01" Id="{9b923b4c-1d23-4977-beb6-bf62efe12c44}">
+    <Declaration><![CDATA[{attribute 'qualified_only'}
+VAR_GLOBAL
+	StateManager			: StateManager;	
+	D02_ACT1 				: Device_Actuator;
+	D01_ACT2				: Device_Actuator;
+	
+	PartLoader_Pusher 				: Device_Servo;
+	PartLoader_Pusher_Axis 			: Axis_Ref;
+	
+	D07_SRV2 				: Device_Servo;
+	D07_SRV2_Axis 			: Axis_Ref;
+END_VAR
+
+VAR_GLOBAL PERSISTENT
+	D06_SRV1_Moves 		: ARRAY [1..100] OF ServoMove;
+	D07_SRV2_Moves 		: ARRAY [1..100] OF ServoMove;
+END_VAR
+]]></Declaration>
+  </GVL>
+</TcPlcObject>

@@ -1,0 +1,22 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<TcPlcObject Version="1.1.0.1" ProductVersion="3.1.4022.11">
+  <POU Name="Cell_Main" Id="{44b70484-de62-433a-a258-7c9cb06da051}" SpecialFunc="None">
+    <Declaration><![CDATA[PROGRAM Cell_Main
+VAR_INPUT
+	
+END_VAR
+
+VAR_OUTPUT
+
+END_VAR]]></Declaration>
+    <Implementation>
+      <ST><![CDATA[Cell.StateManager();
+Cell_Sequencer();
+Comp01_Main();]]></ST>
+    </Implementation>
+    <LineIds Name="Cell_Main">
+      <LineId Id="69" Count="1" />
+      <LineId Id="72" Count="0" />
+    </LineIds>
+  </POU>
+</TcPlcObject>

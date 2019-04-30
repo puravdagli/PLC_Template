@@ -1,0 +1,156 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<TcPlcObject Version="1.1.0.1" ProductVersion="3.1.4022.11">
+  <POU Name="Cell_Sequencer" Id="{b274889a-b419-4de0-bd8f-0e93f4ab20b1}" SpecialFunc="None">
+    <Declaration><![CDATA[PROGRAM Cell_Sequencer
+VAR
+END_VAR
+]]></Declaration>
+    <Implementation>
+      <ST><![CDATA[CASE Cell.StateManager.oState OF
+	State.Aborting:		Cell_SeqAborting();
+	State.Aborted:		Cell_SeqAborted();
+	State.Resetting:	Cell_SeqResetting();
+	State.Stopped:		Cell_SeqStopped();
+	State.Starting:		Cell_SeqStarting();
+	State.Running:		Cell_SeqRunning();
+	State.Pausing:		Cell_SeqPausing();
+	State.Paused:		Cell_SeqPaused();
+	State.Resuming:		Cell_SeqResuming();
+	State.Stopping:		Cell_SeqStopping();	
+END_CASE]]></ST>
+    </Implementation>
+    <Action Name="Cell_SeqAborted" Id="{9fd418e9-5b2a-4515-919b-4bd0e6a4791e}">
+      <Implementation>
+        <ST><![CDATA[]]></ST>
+      </Implementation>
+    </Action>
+    <Action Name="Cell_SeqAborting" Id="{c646c587-e165-4123-9090-069c6b0b1d4e}">
+      <Implementation>
+        <ST><![CDATA[Comp01.StateManager.iCmd := Cmd.Abort;
+//Comp02.StateManager.iCmd := Cmd.Abort;
+
+IF Comp01.StateManager.oState = State.Aborted THEN //AND Comp02.StateManager.oState = State.Aborted THEN
+	Cell.StateManager.iSeqComplete := TRUE;
+END_IF]]></ST>
+      </Implementation>
+    </Action>
+    <Action Name="Cell_SeqPaused" Id="{a9ddab99-e90a-4ac7-ac2a-601735449271}">
+      <Implementation>
+        <ST><![CDATA[]]></ST>
+      </Implementation>
+    </Action>
+    <Action Name="Cell_SeqPausing" Id="{3a69313e-d916-45cb-ada0-f3af761f234b}">
+      <Implementation>
+        <ST><![CDATA[Comp01.StateManager.iCmd := Cmd.Pause;
+//Comp02.StateManager.iCmd := Cmd.Pause;
+
+IF Comp01.StateManager.oState = State.Paused THEN //AND Comp02.StateManager.oState = State.Paused THEN
+	Cell.StateManager.iSeqComplete := TRUE;
+END_IF]]></ST>
+      </Implementation>
+    </Action>
+    <Action Name="Cell_SeqResetting" Id="{83eb45b8-dc57-4728-9b68-19f3f8bc18a0}">
+      <Implementation>
+        <ST><![CDATA[Comp01.StateManager.iCmd := Cmd.Reset;
+//Comp02.StateManager.iCmd := Cmd.Reset;
+
+IF Comp01.StateManager.oState = State.Stopped THEN //AND Comp02.StateManager.oState = State.Stopped THEN
+	Cell.StateManager.iSeqComplete := TRUE;
+END_IF]]></ST>
+      </Implementation>
+    </Action>
+    <Action Name="Cell_SeqResuming" Id="{07d683f3-d94d-4d11-a369-58d015755d22}">
+      <Implementation>
+        <ST><![CDATA[Comp01.StateManager.iCmd := Cmd.Resume;
+//Comp02.StateManager.iCmd := Cmd.Resume;
+
+IF Comp01.StateManager.oState = State.Running THEN //AND Comp02.StateManager.oState = State.Running THEN
+	Cell.StateManager.iSeqComplete := TRUE;
+END_IF]]></ST>
+      </Implementation>
+    </Action>
+    <Action Name="Cell_SeqRunning" Id="{61c1c92a-a883-4bef-b9b8-e0c7c414df08}">
+      <Implementation>
+        <ST><![CDATA[
+
+IF Comp01.StateManager.oState = State.Stopping THEN //AND Comp02.StateManager.oState = State.Stopping THEN
+	Cell.StateManager.iSeqComplete := TRUE;
+END_IF]]></ST>
+      </Implementation>
+    </Action>
+    <Action Name="Cell_SeqStarting" Id="{796ae151-ee64-49e1-b89c-fb5108207a51}">
+      <Implementation>
+        <ST><![CDATA[Comp01.StateManager.iCmd := Cmd.Start;
+//Comp02.StateManager.iCmd := Cmd.Start;
+
+IF Comp01.StateManager.oState = State.Running THEN //AND Comp02.StateManager.oState = State.Running THEN
+	Cell.StateManager.iSeqComplete := TRUE;
+END_IF]]></ST>
+      </Implementation>
+    </Action>
+    <Action Name="Cell_SeqStopped" Id="{0da1b50b-a30a-4fb4-8c33-284d5e2b6343}">
+      <Implementation>
+        <ST><![CDATA[]]></ST>
+      </Implementation>
+    </Action>
+    <Action Name="Cell_SeqStopping" Id="{45168a9f-26a3-429f-84ed-356293d040f6}">
+      <Implementation>
+        <ST><![CDATA[Comp01.StateManager.iCmd := Cmd.Stop;
+//Comp02.StateManager.iCmd := Cmd.Stop;
+
+IF Comp01.StateManager.oState = State.Stopped THEN //AND Comp02.StateManager.oState = State.Stopped THEN
+	Cell.StateManager.iSeqComplete := TRUE;
+END_IF]]></ST>
+      </Implementation>
+    </Action>
+    <LineIds Name="Cell_Sequencer">
+      <LineId Id="19" Count="1" />
+      <LineId Id="32" Count="0" />
+      <LineId Id="31" Count="0" />
+      <LineId Id="29" Count="0" />
+      <LineId Id="21" Count="2" />
+      <LineId Id="30" Count="0" />
+      <LineId Id="24" Count="1" />
+      <LineId Id="8" Count="0" />
+    </LineIds>
+    <LineIds Name="Cell_Sequencer.Cell_SeqAborted">
+      <LineId Id="1" Count="0" />
+    </LineIds>
+    <LineIds Name="Cell_Sequencer.Cell_SeqAborting">
+      <LineId Id="1" Count="1" />
+      <LineId Id="6" Count="0" />
+      <LineId Id="3" Count="2" />
+    </LineIds>
+    <LineIds Name="Cell_Sequencer.Cell_SeqPaused">
+      <LineId Id="1" Count="0" />
+    </LineIds>
+    <LineIds Name="Cell_Sequencer.Cell_SeqPausing">
+      <LineId Id="11" Count="4" />
+      <LineId Id="1" Count="0" />
+    </LineIds>
+    <LineIds Name="Cell_Sequencer.Cell_SeqResetting">
+      <LineId Id="2" Count="4" />
+      <LineId Id="1" Count="0" />
+    </LineIds>
+    <LineIds Name="Cell_Sequencer.Cell_SeqResuming">
+      <LineId Id="2" Count="4" />
+      <LineId Id="1" Count="0" />
+    </LineIds>
+    <LineIds Name="Cell_Sequencer.Cell_SeqRunning">
+      <LineId Id="7" Count="0" />
+      <LineId Id="4" Count="2" />
+      <LineId Id="1" Count="0" />
+    </LineIds>
+    <LineIds Name="Cell_Sequencer.Cell_SeqStarting">
+      <LineId Id="2" Count="4" />
+      <LineId Id="1" Count="0" />
+    </LineIds>
+    <LineIds Name="Cell_Sequencer.Cell_SeqStopped">
+      <LineId Id="1" Count="0" />
+    </LineIds>
+    <LineIds Name="Cell_Sequencer.Cell_SeqStopping">
+      <LineId Id="2" Count="4" />
+      <LineId Id="1" Count="0" />
+    </LineIds>
+  </POU>
+</TcPlcObject>

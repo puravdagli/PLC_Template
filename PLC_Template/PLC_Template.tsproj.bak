@@ -1054,22 +1054,5 @@ External Setpoint Generation:
 				</Instance>
 			</Project>
 		</Plc>
-		<Safety>
-			<Project GUID="{5C77F16E-3477-47FD-9EC6-CA4BF82483EC}" Name="Cell_Safety" PrjFilePath="Cell_Safety\Cell_Safety.splcproj" TmcFilePath="Cell_Safety\Cell_Safety.tmc" GeneralArchiveSettings="#x000f" TargetArchiveSettings="#x0007" FileArchiveSettings="#x000e">
-				<Instance Id="#x01010010" KeepUnrestoredLinks="2">
-					<Name>Cell_Safety Instance</Name>
-					<TmcDesc GUID="{72A6D5B8-E98C-4604-8B90-09D1F8AB38A9}">
-						<Name>Safety</Name>
-						<InitSequence>PO</InitSequence>
-						<Contexts>
-							<Context>
-								<Id>1</Id>
-								<Name>Default</Name>
-							</Context>
-						</Contexts>
-					</TmcDesc>
-				</Instance>
-			</Project>
-		</Safety>
 	</Project>
 </TcSmProject>
